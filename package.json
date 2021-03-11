@@ -2,9 +2,27 @@
   "name": "react-use-inline-style",
   "version": "0.1.0-alpha.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "npx rimraf lib",
+    "build": "npm run clean && tsc",
+    "prepack": "npm run build",
+    "publish": "npm publish",
+    "lint": "eslint src --ext js,jsx,ts,tsx",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -15,5 +33,27 @@
   "bugs": {
     "url": "https://github.com/choegyumin/react-use-inline-style/issues"
   },
-  "homepage": "https://github.com/choegyumin/react-use-inline-style#readme"
+  "homepage": "https://github.com/choegyumin/react-use-inline-style#readme",
+  "devDependencies": {
+    "@types/react": "^16.14.5",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-editorconfig": "^3.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "typescript": "^4.2.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0  || ^17.0.0",
+    "react-dom": "^16.8.0  || ^17.0.0"
+  }
 }
