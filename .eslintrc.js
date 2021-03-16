@@ -10,7 +10,7 @@ module.exports = {
       }
     },
   },
-  plugins: ['editorconfig', '@typescript-eslint', 'react'],
+  plugins: ['editorconfig', '@typescript-eslint', 'react', 'jest'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
@@ -18,7 +18,7 @@ module.exports = {
       jsx: true,
     },
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: './tsconfig.lint.json',
   },
   extends: [
     'plugin:editorconfig/all',
@@ -26,6 +26,7 @@ module.exports = {
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jest/recommended',
   ],
   globals: {
     Atomics: 'readonly',

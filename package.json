@@ -10,8 +10,9 @@
     "build": "npm run clean && tsc",
     "prepack": "npm run build",
     "publish": "npm publish",
-    "lint": "eslint src --ext js,jsx,ts,tsx",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint {src,tests} --ext js,jsx,ts,tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -19,7 +20,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
+    "{src,tests}/**/*.{js,jsx,ts,tsx}": [
       "npm run lint:fix",
       "git add"
     ]
@@ -35,6 +36,9 @@
   },
   "homepage": "https://github.com/choegyumin/react-use-inline-style#readme",
   "devDependencies": {
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/react-hooks": "^5.1.0",
+    "@types/jest": "^26.0.20",
     "@types/react": "^16.14.5",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
@@ -43,13 +47,16 @@
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-editorconfig": "^3.0.2",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.9",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.3.8",
+    "jest": "^26.5.3",
     "lint-staged": "^10.5.4",
     "react": "16.14.0",
     "react-dom": "16.14.0",
+    "ts-jest": "^26.5.3",
     "typescript": "^4.2.3"
   },
   "peerDependencies": {
