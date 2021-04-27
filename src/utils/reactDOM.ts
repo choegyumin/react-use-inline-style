@@ -1,3 +1,5 @@
+import React from 'react';
+
 // https://github.com/facebook/react/blob/v16.14.0/packages/react-dom/src/shared/CSSProperty.js#L8
 const isUnitlessNumberCSSProperties = {
   animationIterationCount: true,
@@ -70,9 +72,12 @@ export const parseReactStyleValue = (name: string, value: unknown, isCustomPrope
 
 export const parseReactStyle = (reactStyle: React.CSSProperties): Partial<CSSStyleDeclaration> => {
   const domStyle: Partial<CSSStyleDeclaration> = {};
-  const entries = Object.entries(reactStyle);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const entries = Object.entries<React.CSSProperties[keyof React.CSSProperties]>(reactStyle as any);
   for (let i = 0; i < entries.length; i += 1) {
-    const [key, value] = entries[i] as [string, unknown];
+    const entry = entries[i];
+    if (entry == null) { continue; }
+    const [key, value] = entry;
     domStyle[key] = parseReactStyleValue(key, value);
   }
   return domStyle;

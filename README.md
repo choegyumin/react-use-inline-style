@@ -9,33 +9,44 @@ npm i react-use-inline-style
 ## Usage
 
 ```tsx
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import useInlineStyle from 'react-use-inline-style';
 
-const add = 10;
+const multiple = 10;
 
 function MyComponent() {
   const ref = useRef<HTMLDivElement>(null);
 
-  const [style, setStyle] = useInlineStyle(() => ({
+  const [count, setCount] = useState(0);
+
+  const [getStyle, setStyle] = useInlineStyle(() => ({
     width: 100,
     height: 100,
     background: '#5c7bff',
   }), () => [ref.current]);
 
-  const handleButtonClick = useCallback(() => {
+  const handleCountUpClick = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  const handleSizeUpClick = useCallback(() => {
     setStyle((prevStyle) => ({
-      width: (Number(prevStyle.width) || 0) + add,
-      height: (Number(prevStyle.height) || 0) + add,
+      width: (Number(prevStyle.width) || 0) + multiple,
+      height: (Number(prevStyle.height) || 0) + multiple,
     }));
   }, []);
 
   // `setStyle` does not trigger re-render.
-  console.log(style);
+  console.log('count:', count);
+  console.log('style:', getStyle());
 
   return <>
-    <button type="button" onClick={handleButtonClick}>Size Up</button>
-    <div ref={ref} style={style} />
+    <button type="button" onClick={handleCountUpClick}>Count Up ({count})</button>
+    <hr />
+    <button type="button" onClick={handleSizeUpClick}>Size Up</button>
+    <div ref={ref} style={getStyle()} />
   </>;
 }
+
+export default UseStyleSample;
 ```
