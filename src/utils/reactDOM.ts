@@ -74,6 +74,7 @@ export const parseReactStyle = (reactStyle: React.CSSProperties): Partial<CSSSty
   const domStyle: Partial<CSSStyleDeclaration> = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const entries = Object.entries<React.CSSProperties[keyof React.CSSProperties]>(reactStyle as any);
+
   for (let i = 0; i < entries.length; i += 1) {
     const entry = entries[i];
     if (entry == null) { continue; }
