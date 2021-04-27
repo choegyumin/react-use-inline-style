@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallowEqual } from './utils/comparison';
+import { styleAreEqual } from './utils/react';
 import { parseReactStyle } from './utils/reactDOM';
 
 export type SetStyleAction = React.CSSProperties | ((prevStyle: React.CSSProperties) => React.CSSProperties);
@@ -22,7 +22,8 @@ export default function useInlineStyle(
 
   const updateStyleRef = React.useCallback(() => {
     const newStyle = { ...factoryRef.current(), ...dirtyStyleRef.current };
-    styleRef.current = shallowEqual(styleRef.current, newStyle) ? styleRef.current : newStyle;
+    const shouldUpdate = !styleAreEqual(styleRef.current, newStyle);
+    if (shouldUpdate) { styleRef.current = newStyle; }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getStyle = React.useCallback(() => styleRef.current, []);
@@ -34,11 +35,12 @@ export default function useInlineStyle(
     updateStyleRef();
 
     const domStyle = parseReactStyle(newStyle);
+    const entries = Object.entries(domStyle);
     const elements = selectorRef.current();
+
     for (let i = 0; i < elements.length; i += 1) {
       const element = elements[i];
       if (element == null) { continue; }
-      const entries = Object.entries(domStyle);
       for (let j = 0; j < entries.length; j += 1) {
         const [key, value] = entries[j];
         element.style[key] = value ?? '';
