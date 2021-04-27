@@ -8,7 +8,7 @@ export default function useInlineStyle(
   factory: () => React.CSSProperties,
   selector: () => NodeListOf<HTMLElement | SVGElement> | Array<HTMLElement | SVGElement | null> = () => [],
 ): [
-    React.CSSProperties,
+    () => React.CSSProperties,
     React.Dispatch<SetStyleAction>,
   ] {
   const styleRef = React.useRef<React.CSSProperties>({});
@@ -20,16 +20,18 @@ export default function useInlineStyle(
   factoryRef.current = factory;
   selectorRef.current = selector;
 
-  const updateStyle = React.useCallback(() => {
+  const updateStyleRef = React.useCallback(() => {
     const newStyle = { ...factoryRef.current(), ...dirtyStyleRef.current };
     styleRef.current = shallowEqual(styleRef.current, newStyle) ? styleRef.current : newStyle;
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const getStyle = React.useCallback(() => styleRef.current, []);
 
   const setStyle = React.useCallback((action: SetStyleAction) => {
     const newStyle = typeof action === 'function' ? action(styleRef.current) : action;
 
     dirtyStyleRef.current = { ...dirtyStyleRef.current, ...newStyle };
-    updateStyle();
+    updateStyleRef();
 
     const domStyle = parseReactStyle(newStyle);
     const elements = selectorRef.current();
@@ -44,7 +46,7 @@ export default function useInlineStyle(
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  updateStyle();
+  updateStyleRef();
 
-  return [styleRef.current, setStyle];
+  return [getStyle, setStyle];
 }
